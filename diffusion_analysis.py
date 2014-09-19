@@ -67,24 +67,52 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
 
     return (fractional_diffusion_coefficient, standard_deviation_fractional_diffusion_coefficient, alpha, standard_deviation_alpha,sample_fitting_data_X_values_nanoseconds,sample_fitting_data_Y_values_Angstroms)
 
-def fit_linear_diffusion_data(time_data_array,MSD_data_array,index_window_filter):
-    '''The (crude) linear MSD vs. time slope = diffusion constant approach and the error estimate used by g_msd.'''
-    x_data_array = time_data_array[index_window_filter:]
-    y_data_array = MSD_data_array[index_window_filter:]
+def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=2):
+    '''The linear (i.e., normal, random-walk) MSD vs. time diffusion constant calculation.
+    
+    The results are returned in a tuple.
+
+    Parameters
+    ----------
+    time_data_array : array_like
+        Input array of time window sizes (nanosecond units)
+    MSD_data_array : array_like
+        Input array of MSD values (Angstrom units; order matched to time_data_array)
+    degrees_of_freedom : int
+        The degrees of freedom for the diffusional process (1, 2 or 3; default 2)
+
+    Returns
+    -------
+    diffusion_constant
+        The linear (or normal, random-walk) diffusion coefficient (units of Angstrom ** 2 / ns ** alpha)
+    diffusion_constant_error_estimate
+        The estimated uncertainty in the diffusion constant (units of Angstrom ** 2 / ns ** alpha), calculated as the difference in the slopes of the two halves of the data. A similar approach is used by GROMACS g_msd.
+
+    Raises
+    ------
+    ValueError
+        If the time window and MSD arrays do not have the same shape
+    '''
+
+    if time_data_array.shape != MSD_data_array.shape:
+        raise ValueError("The shape of time_data_array must match the shape of MSD_data_array.")
+
+    coefficient_dictionary = {1:2.,2:4.,3:6.} #dictionary for mapping degrees_of_freedom to coefficient in fitting equation
+    coefficient = coefficient_dictionary[degrees_of_freedom]
+    
+    x_data_array = time_data_array
+    y_data_array = MSD_data_array
     slope, intercept = numpy.polyfit(x_data_array,y_data_array,1)
-    diffusion_constant = slope / (4 * 10 ** 7) #convert to standard cm ^ 2 / s units
-    #estimate error in D constant using g_msd approach
+    diffusion_constant = slope / coefficient 
+
+    #estimate error in D constant using g_msd approach:
     first_half_x_data, second_half_x_data = numpy.array_split(x_data_array,2)
     first_half_y_data, second_half_y_data = numpy.array_split(y_data_array,2)
     slope_first_half, intercept_first_half = numpy.polyfit(first_half_x_data,first_half_y_data,1)
     slope_second_half, intercept_second_half = numpy.polyfit(second_half_x_data,second_half_y_data,1)
-    diffusion_constant_error_estimate = abs(slope_first_half - slope_second_half) / (4 * 10 ** 7)
-    #I've plotted the linear stuff previously so not going to worry about that here, at least for now
-    log_x_data_array = numpy.log10(x_data_array)
-    log_y_data_array = numpy.log10(y_data_array)
-    slope, intercept = numpy.polyfit(log_x_data_array,log_y_data_array,1)
-    scaling_exponent = slope
-    return (diffusion_constant, diffusion_constant_error_estimate, scaling_exponent)
+    diffusion_constant_error_estimate = abs(slope_first_half - slope_second_half) / coefficient 
+
+    return (diffusion_constant, diffusion_constant_error_estimate)
 
 
 
