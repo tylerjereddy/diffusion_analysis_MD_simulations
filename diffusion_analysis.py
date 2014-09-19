@@ -31,6 +31,10 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
         The scaling exponent (no dimensions) of the non-linear fit
     standard_deviation_alpha
         The standard deviation of the scaling exponent (no dimensions)
+    sample_fitting_data_X_values_nanoseconds
+        An array of time window sizes (x values) that may be used to plot the non-linear fit curve
+    sample_fitting_data_Y_values_Angstroms
+        An array of MSD values (y values) that may be used to plot the non-linear fit curve
 
     Raises
     ------
