@@ -3,7 +3,7 @@ Author: Tyler Reddy
 
 The purpose of this Python module is to provide utility functions for analyzing the diffusion of particles in molecular dynamics simulation trajectories using either linear or anomalous diffusion models.'''
 
-import numpuy
+import numpy
 import scipy
 import scipy.optimize
 
@@ -31,7 +31,15 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
         The scaling exponent (no dimensions) of the non-linear fit
     standard_deviation_alpha
         The standard deviation of the scaling exponent (no dimensions)
+
+    Raises
+    ------
+    ValueError
+        If the time window and MSD arrays do not have the same shape
         '''
+
+    if time_data_array.shape != MSD_data_array.shape:
+        raise ValueError("The shape of time_data_array must match the shape of MSD_data_array.")
 
     def function_to_fit(time,fractional_diffusion_coefficient,scaling_exponent):
         coefficient_dictionary = {1:2,2:4,3:6} #dictionary for mapping degrees_of_freedom to coefficient in fitting equation
