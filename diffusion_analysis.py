@@ -3,10 +3,24 @@ Author: Tyler Reddy
 
 The purpose of this Python module is to provide utility functions for analyzing the diffusion of particles in molecular dynamics simulation trajectories using either linear or anomalous diffusion models.'''
 
+import numpuy
+import scipy
+import scipy.optimize
+
 def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=2):
     '''This function should fit anomalous diffusion data to Equation 1 in Kneller et al. (2011) J Chem Phys 135: 141105. It will assign an appropriate coefficient based on the specified degrees_of_freedom. The latter value defaults to 2 (i.e., a planar phospholipid bilayer).
     Input data should include arrays of MSD (in Angstroms) and time values (in ns).
     The results are returned in a tuple.
+
+    Parameters
+    ----------
+    time_data_array : array_like
+        Input array of time window sizes (nanosecond units)
+    MSD_data_array : array_like
+        Input array of MSD values (Angstrom units; order matched to time_data_array)
+    degrees_of_freedom : int
+        The degrees of freedom for the diffusional process (1, 2 or 3; default 2)
+
     Returns
     -------
     fractional_diffusion_coefficient
