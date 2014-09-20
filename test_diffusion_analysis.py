@@ -1,6 +1,7 @@
 import unittest
 import numpy
 import numpy.testing
+import numpy.random
 import scipy
 import math
 import diffusion_analysis
@@ -34,5 +35,24 @@ class Test_anomalous_diffusion_non_linear_fit(unittest.TestCase):
             self.assertEqual(alpha,alpha_expected)
 
 
+class Test_linear_fit_normal_diffusion(unittest.TestCase):
         
+    def setUp(self):
+        self.linearly_increasing_time_array = numpy.arange(220)
+        self.random_slope_value = numpy.random.random_sample() * 10.
+        self.linear_MSD_array_for_random_slope = self.linearly_increasing_time_array * self.random_slope_value
+
+    def tearDown(self):
+        del self.linearly_increasing_time_array
+        del self.random_slope_value
+        del self.linear_MSD_array_for_random_slope
+        
+    def test_linear_data_on_linear_diffusion_function(self):
+        '''Test the linear fit (normal diffusion) function with linear input data with a random slope value.'''
+        for degrees_of_freedom in [1,2,3]: #test for all normal degrees of freedom
+            coefficient = degrees_of_freedom * 2. #2,4,6 for 1D, 2D, 3D, respectively
+            D_expected = self.random_slope_value / coefficient 
+            D_actual = diffusion_analysis.fit_linear_diffusion_data(self.linearly_increasing_time_array,self.linear_MSD_array_for_random_slope,degrees_of_freedom=degrees_of_freedom)[0]
+            numpy.testing.assert_almost_equal(D_actual,D_expected,decimal=10)
+
 
