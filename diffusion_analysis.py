@@ -87,6 +87,10 @@ def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=
         The linear (or normal, random-walk) diffusion coefficient (units of Angstrom ** 2 / ns ** alpha)
     diffusion_constant_error_estimate
         The estimated uncertainty in the diffusion constant (units of Angstrom ** 2 / ns ** alpha), calculated as the difference in the slopes of the two halves of the data. A similar approach is used by GROMACS g_msd.
+    sample_fitting_data_X_values_nanoseconds
+        An array of time window sizes (x values) that may be used to plot the linear fit 
+    sample_fitting_data_Y_values_Angstroms
+        An array of MSD values (y values) that may be used to plot the linear fit 
 
     Raises
     ------
@@ -102,7 +106,8 @@ def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=
     
     x_data_array = time_data_array
     y_data_array = MSD_data_array
-    slope, intercept = numpy.polyfit(x_data_array,y_data_array,1)
+    z = numpy.polyfit(x_data_array,y_data_array,1)
+    slope, intercept = z
     diffusion_constant = slope / coefficient 
 
     #estimate error in D constant using g_msd approach:
@@ -112,7 +117,12 @@ def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=
     slope_second_half, intercept_second_half = numpy.polyfit(second_half_x_data,second_half_y_data,1)
     diffusion_constant_error_estimate = abs(slope_first_half - slope_second_half) / coefficient 
 
-    return (diffusion_constant, diffusion_constant_error_estimate)
+    #use poly1d object for polynomial calling convenience (to provide plotting fit data for user if they want to use it):
+    p = numpy.poly1d(z)
+    sample_fitting_data_X_values_nanoseconds = numpy.linspace(time_data_array[0],time_data_array[-1],100)
+    sample_fitting_data_Y_values_Angstroms = p(sample_fitting_data_X_values_nanoseconds)
+
+    return (diffusion_constant, diffusion_constant_error_estimate,sample_fitting_data_X_values_nanoseconds,sample_fitting_data_Y_values_Angstroms)
 
 
 
