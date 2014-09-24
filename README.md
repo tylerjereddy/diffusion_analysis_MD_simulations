@@ -11,3 +11,4 @@ For contributions:
   * ensure all unit tests pass (run nosetests)
   * ensure all doctests pass (run doctesting.py)
   * if you import new modules, you may need to mock them in the Sphinx conf.py documentation file so that the docs are properly compiled by readthedocs
+  * attempt to match the [numpy documentation standard](https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt) as closely as possible
