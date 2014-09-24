@@ -8,7 +8,7 @@ import scipy
 import scipy.optimize
 
 def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=2):
-    '''This function should fit anomalous diffusion data to Equation 1 in `Kneller et al. (2011)`_, and return appropriate diffusion parameters.
+    '''This function should fit anomalous diffusion data to Equation 1 in [Kneller2011]_, and return appropriate diffusion parameters.
     
     An appropriate coefficient will be assigned based on the specified `degrees_of_freedom`. The latter value defaults to 2 (i.e., a planar phospholipid bilayer).
     Input data should include arrays of MSD (in Angstroms) and time values (in ns).
@@ -46,8 +46,7 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
     References
     ----------
 
-    .. _Kneller et al. (2011):
-       Kneller et al. (2011) J Chem Phys 135: 141105.
+    .. [Kneller2011] Kneller et al. (2011) J Chem Phys 135: 141105.
 
 
     Examples
