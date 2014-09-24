@@ -117,7 +117,7 @@ def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=
     diffusion_constant
         The linear (or normal, random-walk) diffusion coefficient (units of Angstrom ** 2 / ns ** alpha)
     diffusion_constant_error_estimate
-        The estimated uncertainty in the diffusion constant (units of Angstrom ** 2 / ns ** alpha), calculated as the difference in the slopes of the two halves of the data. A similar approach is used by GROMACS g_msd.
+        The estimated uncertainty in the diffusion constant (units of Angstrom ** 2 / ns ** alpha), calculated as the difference in the slopes of the two halves of the data. A similar approach is used by GROMACS g_msd [Hess2008]_.
     sample_fitting_data_X_values_nanoseconds
         An array of time window sizes (x values) that may be used to plot the linear fit 
     sample_fitting_data_Y_values_Angstroms
@@ -127,6 +127,12 @@ def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=
     ------
     ValueError
         If the time window and MSD arrays do not have the same shape
+
+    References
+    ----------
+
+    .. [Hess2008] Hess et al. (2008) JCTC 4: 435-447.
+
     '''
 
     if time_data_array.shape != MSD_data_array.shape:
