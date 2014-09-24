@@ -44,6 +44,7 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
     Examples
     --------
     Calculate fractional diffusion coefficient and alpha from artifical data (would typically obtain empirical data from an MD simulation trajectory):
+
     >>> import diffusion_analysis
     >>> import numpy
     >>> artificial_time_values = numpy.arange(10)
