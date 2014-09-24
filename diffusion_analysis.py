@@ -40,6 +40,19 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
     ------
     ValueError
         If the time window and MSD arrays do not have the same shape
+
+    Examples
+    --------
+    Calculate fractional diffusion coefficient and alpha from artifical data (would typically obtain empirical data from an MD simulation trajectory):
+    >>> import diffusion_analysis
+    >>> import numpy
+    >>> artificial_time_values = numpy.arange(10)
+    >>> artificial_MSD_values = numpy.array([0.,1.,2.,2.2,3.6,4.7,5.8,6.6,7.0,6.9])
+    >>> results_tuple = diffusion_analysis.fit_anomalous_diffusion_data(artificial_time_values,artificial_MSD_values)
+    >>> D, D_std, alpha, alpha_std = results_tuple[0:4]
+    >>> print D, D_std, alpha, alpha_std 
+    0.268426206526 0.0429995249239 0.891231967011 0.0832911559401
+
         '''
 
     if time_data_array.shape != MSD_data_array.shape:

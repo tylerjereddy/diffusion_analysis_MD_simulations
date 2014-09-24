@@ -8,5 +8,6 @@ The documentation for the project is available here: http://diffusion-analysis-m
 Please cite: [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.11827.png)](http://dx.doi.org/10.5281/zenodo.11827)
 
 For contributions:
-  * ensure all unit tests pass
+  * ensure all unit tests pass (run nosetests)
+  * ensure all doctests pass (run doctesting.py)
   * if you import new modules, you may need to mock them in the Sphinx conf.py documentation file so that the docs are properly compiled by readthedocs
