@@ -46,7 +46,7 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
     References
     ----------
 
-    .. [1] Kneller et al. (2011) J Chem Phys 135: 141105.
+    .. _[1] Kneller et al. (2011) J Chem Phys 135: 141105.
 
 
     Examples
