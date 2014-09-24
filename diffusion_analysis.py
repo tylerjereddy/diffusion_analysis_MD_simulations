@@ -12,7 +12,7 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
     
     .. math::
 
-        MSD = N * D_{\alpha} * t^{\alpha}
+        MSD = ND_{\\alpha}t^{\\alpha}
 
     An appropriate coefficient (`N` = 2,4,6 for 1,2,3 `degrees_of_freedom`) will be assigned based on the specified `degrees_of_freedom`. The latter value defaults to 2 (i.e., a planar phospholipid bilayer with `N` = 4).
     Input data should include arrays of MSD (in Angstroms) and time values (in ns).
