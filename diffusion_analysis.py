@@ -43,7 +43,7 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
 
     Examples
     --------
-    Calculate fractional diffusion coefficient and alpha from artifical data (would typically obtain empirical data from an MD simulation trajectory):
+    Calculate fractional diffusion coefficient and alpha from artificial data (would typically obtain empirical data from an MD simulation trajectory):
 
     >>> import diffusion_analysis
     >>> import numpy
@@ -53,6 +53,15 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
     >>> D, D_std, alpha, alpha_std = results_tuple[0:4]
     >>> print D, D_std, alpha, alpha_std 
     0.268426206526 0.0429995249239 0.891231967011 0.0832911559401
+
+    Plot the non-linear fit data:
+
+    >>> import matplotlib
+    >>> import matplotlib.pyplot as plt
+    >>> sample_fit_x_values, sample_fit_y_values = results_tuple[4:]
+    >>> p = plt.plot(sample_fit_x_values,sample_fit_y_values,'-',artificial_time_values,artificial_MSD_values,'.')
+
+    image:: example_nonlinear.png
 
         '''
 
