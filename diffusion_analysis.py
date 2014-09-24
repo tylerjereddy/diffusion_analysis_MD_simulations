@@ -133,6 +133,28 @@ def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=
 
     .. [Hess2008] Hess et al. (2008) JCTC 4: 435-447.
 
+    Examples
+    --------
+    Calculate linear diffusion coefficient from artificial data (would typically obtain empirical data from an MD simulation trajectory):
+
+    >>> import diffusion_analysis
+    >>> import numpy
+    >>> artificial_time_values = numpy.arange(10)
+    >>> artificial_MSD_values = numpy.array([0.,1.,2.,2.2,3.6,4.7,5.8,6.6,7.0,6.9])
+    >>> results_tuple = diffusion_analysis.fit_linear_diffusion_data(artificial_time_values,artificial_MSD_values)
+    >>> D, D_error = results_tuple[0:2]
+    >>> print D, D_error
+    0.210606060606 0.07
+
+    Plot the linear fit data:
+
+    >>> import matplotlib
+    >>> import matplotlib.pyplot as plt
+    >>> sample_fit_x_values, sample_fit_y_values = results_tuple[2:]
+    >>> p = plt.plot(sample_fit_x_values,sample_fit_y_values,'-',artificial_time_values,artificial_MSD_values,'.')
+
+    .. image:: example_linear.png
+
     '''
 
     if time_data_array.shape != MSD_data_array.shape:
