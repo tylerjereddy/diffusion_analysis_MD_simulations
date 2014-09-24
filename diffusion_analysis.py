@@ -61,7 +61,7 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
     >>> sample_fit_x_values, sample_fit_y_values = results_tuple[4:]
     >>> p = plt.plot(sample_fit_x_values,sample_fit_y_values,'-',artificial_time_values,artificial_MSD_values,'.')
 
-    image:: example_nonlinear.png
+    .. image:: example_nonlinear.png
 
         '''
 
