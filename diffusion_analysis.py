@@ -7,7 +7,6 @@ The purpose of this Python module is to provide utility functions for analyzing 
 import numpy
 import scipy
 import scipy.optimize
-import scipy.spatial.distance
 
 def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=2):
     '''This function should fit anomalous diffusion data to Equation 1 in [Kneller2011]_, and return appropriate diffusion parameters.
