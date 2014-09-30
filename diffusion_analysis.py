@@ -16,7 +16,7 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
         MSD = ND_{\\alpha}t^{\\alpha}
 
     An appropriate coefficient (`N` = 2,4,6 for 1,2,3 `degrees_of_freedom`) will be assigned based on the specified `degrees_of_freedom`. The latter value defaults to 2 (i.e., a planar phospholipid bilayer with `N` = 4).
-    Input data should include arrays of MSD (in Angstroms) and time values (in ns).
+    Input data should include arrays of MSD (in Angstroms ** 2) and time values (in ns).
     The results are returned in a tuple.
 
     Parameters
@@ -24,7 +24,7 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
     time_data_array : array_like
         Input array of time window sizes (nanosecond units)
     MSD_data_array : array_like
-        Input array of MSD values (Angstrom units; order matched to time_data_array)
+        Input array of MSD values (Angstrom ** 2 units; order matched to time_data_array)
     degrees_of_freedom : int
         The degrees of freedom for the diffusional process (1, 2 or 3; default 2)
 
@@ -113,7 +113,7 @@ def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=
     time_data_array : array_like
         Input array of time window sizes (nanosecond units)
     MSD_data_array : array_like
-        Input array of MSD values (Angstrom units; order matched to time_data_array)
+        Input array of MSD values (Angstrom ** 2 units; order matched to time_data_array)
     degrees_of_freedom : int
         The degrees of freedom for the diffusional process (1, 2 or 3; default 2)
 
