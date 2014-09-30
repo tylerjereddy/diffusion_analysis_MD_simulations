@@ -242,7 +242,7 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
         for ts in universe_object.trajectory[::MSD_window_size_frames]:
             if counter == 0: #first parsed frame
                 previous_frame_centroid_array_dictionary = centroid_array_production(MDA_residue_selection_dictionary)
-                print 'frame:', ts.frame
+                #print 'frame:', ts.frame
             else: #all subsequent frames
                 current_frame_centroid_array_dictionary = centroid_array_production(MDA_residue_selection_dictionary)
 
@@ -256,7 +256,7 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
 
                 #reset the value of the 'previous' array as you go along:
                 previous_frame_centroid_array_dictionary = current_frame_centroid_array_dictionary
-                print 'frame:', ts.frame 
+                #print 'frame:', ts.frame 
             counter += 1
         for particle_name, MSD_data_subdictionary in trajectory_striding_dictionary.iteritems():
             if not particle_name in dict_MSD_values['MSD_value_dict'].keys(): #initialize subdictionaries as needed

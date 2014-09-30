@@ -5,6 +5,9 @@ import numpy.random
 import scipy
 import math
 import diffusion_analysis
+import MDAnalysis
+import os
+import sys
 
 class Test_anomalous_diffusion_non_linear_fit(unittest.TestCase):
 
@@ -70,4 +73,32 @@ class Test_linear_fit_normal_diffusion(unittest.TestCase):
             D_actual = diffusion_analysis.fit_linear_diffusion_data(self.linearly_increasing_time_array,self.linear_MSD_array_for_random_slope,degrees_of_freedom=degrees_of_freedom)[0]
             numpy.testing.assert_almost_equal(D_actual,D_expected,decimal=10)
 
+class Test_MSD_calculation_from_trajectory(unittest.TestCase):
+
+    def setUp(self):
+        self.simple_xtc_path_1 = './test_data/diffusion_testing.xtc'
+        self.simple_gro_path_1 = './test_data/dummy.gro'
+        self.frame_window_size_list_1 = [1,2,3,5]
+        self.angstrom_displacement_per_frame_residue_1_case_1 = 0.1 #MET residue
+        self.angstrom_displacement_per_frame_residue_2_case_1 = 1.2 #ARG residue
+        self.angstrom_displacement_per_frame_residue_3_case_1 = 4.0 #CYS residue
+        self.dict_particle_selection_strings_1 = {'MET':'resname MET','ARG':'resname ARG','CYS':'resname CYS'}
+
+    def tearDown(self):
+        del self.simple_xtc_path_1
+        del self.simple_gro_path_1
+        del self.frame_window_size_list_1 
+        del self.angstrom_displacement_per_frame_residue_1_case_1 
+        del self.angstrom_displacement_per_frame_residue_2_case_1
+        del self.angstrom_displacement_per_frame_residue_3_case_1
+        del self.dict_particle_selection_strings_1 
+        
+    def test_simple_diffusion_case_1(self):
+        '''A simple test of MSD value extraction from an artificial / simple xtc file.'''
+        dict_MSD_values = diffusion_analysis.mean_square_displacement_by_species(self.simple_gro_path_1,self.simple_xtc_path_1,self.frame_window_size_list_1,self.dict_particle_selection_strings_1)
+        observed_MET_MSD_value_array,observed_ARG_MSD_value_array,observed_CYS_MSD_value_array = [numpy.array(dict_MSD_values['MSD_value_dict'][residue]) for residue in ['MET','ARG','CYS']]
+        array_frame_window_sizes = numpy.array(self.frame_window_size_list_1)
+        numpy.testing.assert_allclose(observed_MET_MSD_value_array,numpy.square(array_frame_window_sizes * self.angstrom_displacement_per_frame_residue_1_case_1),rtol=1e-06)
+        numpy.testing.assert_allclose(observed_ARG_MSD_value_array,numpy.square(array_frame_window_sizes * self.angstrom_displacement_per_frame_residue_2_case_1),rtol=1e-06)
+        numpy.testing.assert_allclose(observed_CYS_MSD_value_array,numpy.square(array_frame_window_sizes * self.angstrom_displacement_per_frame_residue_3_case_1),rtol=1e-06)
 
