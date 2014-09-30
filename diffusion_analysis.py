@@ -6,6 +6,7 @@ The purpose of this Python module is to provide utility functions for analyzing 
 import numpy
 import scipy
 import scipy.optimize
+import scipy.spatial.distance
 
 def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=2):
     '''This function should fit anomalous diffusion data to Equation 1 in [Kneller2011]_, and return appropriate diffusion parameters.
@@ -188,4 +189,81 @@ def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=
     return (diffusion_constant, diffusion_constant_error_estimate,sample_fitting_data_X_values_nanoseconds,sample_fitting_data_Y_values_Angstroms)
 
 
+def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_path, window_size_frames_list, dict_particle_selection_strings):
+    '''Calculate the mean square displacement (MSD) of particles in a molecular dynamics simulation trajectory using the Python `MDAnalysis <http://code.google.com/p/mdanalysis/>`_ package [Michaud-Agrawal2011]_.
 
+    Parameters
+    ----------
+    coordinate_file_path: str
+        Path to the coordinate file to be used in loading the trajectory.
+    trajectory_file_path: str
+        Path to the trajectory file to be used.
+    window_size_frames_list: list
+        List of window sizes measured in frames. Time values are not used as timesteps and simulation output frequencies can vary.
+    dict_particle_selection_strings: dict
+        Dictionary of the MDAnalysis selection strings for each particle set for which MSD values will be calculated separately. Format: {'particle_identifier':'MDAnalysis selection string'}. If a given selection contains more than one particle then the centroid of the particles is used.
+
+    Returns
+    -------
+    dict_MSD_data: dict
+        Dictionary of mean square displacement data.
+        
+    References
+    ----------
+
+    .. [Michaud-Agrawal2011] N. Michaud-Agrawal, E. J. Denning, T. B. Woolf, and O. Beckstein. MDAnalysis: A Toolkit for the Analysis of Molecular Dynamics Simulations. J. Comput. Chem. 32 (2011), 2319–2327
+
+'''
+    import MDAnalysis
+
+    universe_object = MDAnalysis.Universe(coordinate_file_path,trajectory_file_path)
+
+    MDA_residue_selection_dictionary = {}
+    for particle_name, selection_string in dict_particle_selection_strings.iteritems():
+        MDA_selection = universe_object.selectAtoms(selection_string)
+        MDA_selection_residue_list = MDA_selection.residues #have to break it down by residues, otherwise would end up with centroid of all particles of a given name
+        list_per_residue_selection_objects = [residue.selectAtoms(selection_string) for residue in MDA_selection_residue_list] #the MDA selection objects PER residue
+        MDA_residue_selection_dictionary[particle_name] = list_per_residue_selection_objects
+
+    dict_MSD_values = {'MSD_value_dict':{},'MSD_std_dict':{}}
+
+    def centroid_array_production(current_MDA_selection_dictionary): #actually my modification of this for the github workflow won't work--it will find the centroid of ALL the particles with the same name
+        '''Produce numpy arrays of centroids organized in a dictionary by particle identifier and based on assignment of particle selections to unique residue objects within MDAnalysis.'''
+        dictionary_centroid_arrays = {}
+        for particle_name,list_per_residue_selection_objects in current_MDA_selection_dictionary.iteritems():
+            list_per_residue_selection_centroids = [residue_selection.centroid() for residue_selection in list_per_residue_selection_objects]
+            dictionary_centroid_arrays[particle_name] = numpy.array(list_per_residue_selection_centroids)
+        return dictionary_centroid_arrays
+
+    dict_MSD_values_this_replicate = {'MSD_value_dict':{},'MSD_std_dict':{},'frame_skip_value_list':[]} #for overall storage of MSD average / standard deviation values for this replicate
+    for MSD_window_size_frames in window_size_frames_list:
+        list_per_window_average_displacements = []
+        counter = 0
+        trajectory_striding_dictionary = {} #store values in a dict as you stride through trajectory
+        for ts in universe_object.trajectory[::MSD_window_size_frames]:
+            if counter == 0: #first parsed frame
+                previous_frame_centroid_array_dictionary = centroid_array_production(MDA_residue_selection_dictionary)
+                print 'frame:', ts.frame
+            else: #all subsequent frames
+                current_frame_centroid_array_dictionary = centroid_array_production(MDA_residue_selection_dictionary)
+
+                for particle_name in current_frame_centroid_array_dictionary.keys():
+                    if not particle_name in trajectory_striding_dictionary.keys(): #create the appropriate entry if this particle types hasn't been parsed yet
+                        trajectory_striding_dictionary[particle_name] = {'MSD_value_list_centroids':[]}
+                    current_delta_array_centroids = previous_frame_centroid_array_dictionary[particle_name] - current_frame_centroid_array_dictionary[particle_name]
+                    square_delta_array_centroids = numpy.square(current_delta_array_centroids)
+                    sum_squares_delta_array_centroids = numpy.sum(square_delta_array_centroids,axis=1)
+                    trajectory_striding_dictionary[particle_name]['MSD_value_list_centroids'].append(numpy.average(sum_squares_delta_array_centroids))
+
+                #reset the value of the 'previous' array as you go along:
+                previous_frame_centroid_array_dictionary = current_frame_centroid_array_dictionary
+                print 'frame:', ts.frame 
+            counter += 1
+        for particle_name, MSD_data_subdictionary in trajectory_striding_dictionary.iteritems():
+            if not particle_name in dict_MSD_values_this_replicate['MSD_value_dict'].keys(): #initialize subdictionaries as needed
+                dict_MSD_values_this_replicate['MSD_value_dict'][particle_name] = []
+                dict_MSD_values_this_replicate['MSD_std_dict'][particle_name] = []
+            dict_MSD_values_this_replicate['MSD_value_dict'][particle_name].append(numpy.average(numpy.array(trajectory_striding_dictionary[particle_name]['MSD_value_list_centroids'])))
+            dict_MSD_values_this_replicate['MSD_std_dict'][particle_name].append(numpy.std(numpy.array(trajectory_striding_dictionary[particle_name]['MSD_value_list_centroids'])))
+        dict_MSD_values_this_replicate['frame_skip_value_list'].append(MSD_window_size_frames)
+    return dict_MSD_values_this_replicate
