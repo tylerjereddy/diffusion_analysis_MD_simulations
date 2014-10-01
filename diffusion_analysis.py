@@ -206,12 +206,39 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
     Returns
     -------
     dict_MSD_values: dict
-        Dictionary of mean square displacement data. Contains three keys: MSD_value_dict (MSD values), MSD_std_dict (standard deviation of MSD values), frame_skip_value_list (the frame window sizes)
+        Dictionary of mean square displacement data. Contains three keys: MSD_value_dict (MSD values, in Angstrom ** 2), MSD_std_dict (standard deviation of MSD values), frame_skip_value_list (the frame window sizes)
         
     References
     ----------
 
     .. [Michaud-Agrawal2011] N. Michaud-Agrawal, E. J. Denning, T. B. Woolf, and O. Beckstein. MDAnalysis: A Toolkit for the Analysis of Molecular Dynamics Simulations. J. Comput. Chem. 32 (2011), 2319–2327
+
+    Examples
+    --------
+    Extract MSD values from an artificial GROMACS xtc file (results measured in A**2 based on frame window sizes) containing only three amino acid residues.
+    
+    >>> import diffusion_analysis
+    >>> import numpy
+    >>> import matplotlib
+    >>> import matplotlib.pyplot as plt 
+
+    >>> window_size_list_frames = [1,2,4,6]
+    >>> dict_particle_selection_strings = {'MET':'resname MET','ARG':'resname ARG','CYS':'resname CYS'}
+    >>> dict_MSD_values = diffusion_analysis.mean_square_displacement_by_species('./test_data/dummy.gro','./test_data/diffusion_testing.xtc',window_size_list_frames,dict_particle_selection_strings)
+
+    Plots the results:
+
+    >>> fig = plt.figure()
+    >>> ax = fig.add_subplot(111)
+    >>> for residue_name in dict_particle_selection_strings.keys():
+            p = ax.errorbar(window_size_list_frames,dict_MSD_values['MSD_value_dict'][residue_name],yerr=dict_MSD_values['MSD_std_dict'][residue_name],label=residue_name,fmt='o')
+    >>> ax.set_xlabel('Frame #')
+    >>> ax.set_ylabel('MSD ($\AA^2$)')
+    >>> ax.set_ylim(-10,600)
+    >>> L = ax.legend(loc=2,numpoints=1)
+
+    .. image:: example_MSD_extraction
+
 
 '''
     import MDAnalysis
