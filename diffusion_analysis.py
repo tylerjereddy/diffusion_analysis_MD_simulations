@@ -231,13 +231,13 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
     >>> fig = plt.figure()
     >>> ax = fig.add_subplot(111)
     >>> for residue_name in dict_particle_selection_strings.keys():
-            p = ax.errorbar(window_size_list_frames,dict_MSD_values['MSD_value_dict'][residue_name],yerr=dict_MSD_values['MSD_std_dict'][residue_name],label=residue_name,fmt='o')
-    >>> ax.set_xlabel('Frame #')
-    >>> ax.set_ylabel('MSD ($\AA^2$)')
-    >>> ax.set_ylim(-10,600)
-    >>> L = ax.legend(loc=2,numpoints=1)
+    ...     p = ax.errorbar(window_size_list_frames,dict_MSD_values['MSD_value_dict'][residue_name],yerr=dict_MSD_values['MSD_std_dict'][residue_name],label=residue_name,fmt='o')
+    >>> a = ax.set_xlabel('Frame #')
+    >>> a = ax.set_ylabel('MSD ($\AA^2$)')
+    >>> a = ax.set_ylim(-10,600)
+    >>> a = ax.legend(loc=2,numpoints=1)
 
-    .. image:: example_MSD_extraction
+    .. image:: example_MSD_extraction.png
 
 
 '''
