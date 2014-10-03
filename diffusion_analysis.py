@@ -120,9 +120,9 @@ def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=
     Returns
     -------
     diffusion_constant
-        The linear (or normal, random-walk) diffusion coefficient (units of Angstrom ** 2 / ns ** alpha)
+        The linear (or normal, random-walk) diffusion coefficient (units of Angstrom ** 2 / ns)
     diffusion_constant_error_estimate
-        The estimated uncertainty in the diffusion constant (units of Angstrom ** 2 / ns ** alpha), calculated as the difference in the slopes of the two halves of the data. A similar approach is used by GROMACS g_msd [Hess2008]_.
+        The estimated uncertainty in the diffusion constant (units of Angstrom ** 2 / ns), calculated as the difference in the slopes of the two halves of the data. A similar approach is used by GROMACS g_msd [Hess2008]_.
     sample_fitting_data_X_values_nanoseconds
         An array of time window sizes (x values) that may be used to plot the linear fit 
     sample_fitting_data_Y_values_Angstroms
@@ -196,8 +196,8 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
     ----------
     coordinate_file_path: str
         Path to the coordinate file to be used in loading the trajectory.
-    trajectory_file_path: str
-        Path to the trajectory file to be used.
+    trajectory_file_path: str or list of str
+        Path to the trajectory file to be used or ordered list of trajectory file paths.
     window_size_frames_list: list
         List of window sizes measured in frames. Time values are not used as timesteps and simulation output frequencies can vary.
     dict_particle_selection_strings: dict
@@ -226,13 +226,13 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
     >>> dict_particle_selection_strings = {'MET':'resname MET','ARG':'resname ARG','CYS':'resname CYS'}
     >>> dict_MSD_values = diffusion_analysis.mean_square_displacement_by_species('./test_data/dummy.gro','./test_data/diffusion_testing.xtc',window_size_list_frames,dict_particle_selection_strings)
 
-    Plots the results:
+    Plot the results:
 
     >>> fig = plt.figure()
     >>> ax = fig.add_subplot(111)
     >>> for residue_name in dict_particle_selection_strings.keys():
     ...     p = ax.errorbar(window_size_list_frames,dict_MSD_values['MSD_value_dict'][residue_name],yerr=dict_MSD_values['MSD_std_dict'][residue_name],label=residue_name,fmt='o')
-    >>> a = ax.set_xlabel('Frame #')
+    >>> a = ax.set_xlabel('Window size (frames)')
     >>> a = ax.set_ylabel('MSD ($\AA^2$)')
     >>> a = ax.set_ylim(-10,600)
     >>> a = ax.legend(loc=2,numpoints=1)
