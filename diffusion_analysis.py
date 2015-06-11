@@ -272,7 +272,7 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
             dictionary_centroid_arrays = {}
             full_protein_coord_array = protein_sel.coordinates()
             list_individual_protein_coord_arrays = numpy.split(full_protein_coord_array,num_protein_copies)
-            list_per_protein_centroids = [numpy.average(protein_coord_array,axis=1) for protein_coord_array in list_individual_protein_coord_arrays]
+            list_per_protein_centroids = [numpy.average(protein_coord_array,axis=0) for protein_coord_array in list_individual_protein_coord_arrays]
             dictionary_centroid_arrays['protein'] = numpy.array(list_per_protein_centroids)
             return dictionary_centroid_arrays
 
