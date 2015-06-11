@@ -189,11 +189,11 @@ def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=
     return (diffusion_constant, diffusion_constant_error_estimate,sample_fitting_data_X_values_nanoseconds,sample_fitting_data_Y_values_Angstroms)
 
 
-def centroid_array_production_protein(protein_sel):
+def centroid_array_production_protein(protein_sel,num_protein_copies):
     dictionary_centroid_arrays = {}
     full_protein_coord_array = protein_sel.coordinates()
     list_individual_protein_coord_arrays = numpy.split(full_protein_coord_array,num_protein_copies)
-    list_per_protein_centroids = [numpy.average(protein_coord_array,axis=1) for protein_coord_array in list_individual_protein_coord_arrays]
+    list_per_protein_centroids = [numpy.average(protein_coord_array,axis=0) for protein_coord_array in list_individual_protein_coord_arrays]
     dictionary_centroid_arrays['protein'] = numpy.array(list_per_protein_centroids)
     return dictionary_centroid_arrays
 
@@ -289,12 +289,12 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
                 if not contiguous_protein_selection:
                     previous_frame_centroid_array_dictionary = centroid_array_production(MDA_residue_selection_dictionary)
                 else:
-                    previous_frame_centroid_array_dictionary = centroid_array_production_protein(protein_selection)
+                    previous_frame_centroid_array_dictionary = centroid_array_production_protein(protein_selection, num_protein_copies)
             else: #all subsequent frames
                 if not contiguous_protein_selection:
                     current_frame_centroid_array_dictionary = centroid_array_production(MDA_residue_selection_dictionary)
                 else:
-                    current_frame_centroid_array_dictionary = centroid_array_production_protein(protein_selection)
+                    current_frame_centroid_array_dictionary = centroid_array_production_protein(protein_selection, num_protein_copies)
 
                 for particle_name in current_frame_centroid_array_dictionary.keys():
                     if not particle_name in trajectory_striding_dictionary.keys(): #create the appropriate entry if this particle types hasn't been parsed yet

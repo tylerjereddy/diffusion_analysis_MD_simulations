@@ -102,3 +102,35 @@ class Test_MSD_calculation_from_trajectory(unittest.TestCase):
         numpy.testing.assert_allclose(observed_ARG_MSD_value_array,numpy.square(array_frame_window_sizes * self.angstrom_displacement_per_frame_residue_2_case_1),rtol=1e-06)
         numpy.testing.assert_allclose(observed_CYS_MSD_value_array,numpy.square(array_frame_window_sizes * self.angstrom_displacement_per_frame_residue_3_case_1),rtol=1e-06)
 
+class Test_protein_diffusion_calculation(unittest.TestCase):
+    
+    def setUp(self):
+        self.simple_xtc_path = './test_data/test_multiple_protein.xtc' # xtc with 100 frames
+        self.simple_gro_path = './test_data/test_multiple_protein.gro' # gro with 5 prots, each of 8 res (18 atoms)
+        self.frame_window_size_list = [1,2,3,5] # not important for now - just need something
+
+    def tearDown(self):
+        del self.simple_xtc_path
+        del self.simple_gro_path
+        del self.frame_window_size_list
+
+    def test_protein_centroid_data_structure(self):
+        # set up a centroid dictionary as in centroid_array_production_protein
+        universe_object = MDAnalysis.Universe(self.simple_gro_path, self.simple_xtc_path)
+        protein_centroids = []
+        for i in range(5):
+            prot_sele = universe_object.selectAtoms('bynum {}:{}'.format(i*18+1, (i+1)*18) )
+            protein_centroids.append(prot_sele.centroid())
+        # now get the same data from the diffusion_analysis script
+        all_prot_sele = universe_object.selectAtoms('bynum 1:90')
+        num_protein_copies = 5
+        dictionary_centroid_arrays = diffusion_analysis.centroid_array_production_protein(all_prot_sele, num_protein_copies )
+        # ..and compare
+        numpy.testing.assert_allclose(dictionary_centroid_arrays['protein'],numpy.array(protein_centroids),rtol=1e-06)
+
+
+
+
+
+
+
