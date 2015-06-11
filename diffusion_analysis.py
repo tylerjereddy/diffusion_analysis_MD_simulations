@@ -189,6 +189,15 @@ def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=
     return (diffusion_constant, diffusion_constant_error_estimate,sample_fitting_data_X_values_nanoseconds,sample_fitting_data_Y_values_Angstroms)
 
 
+def centroid_array_production_protein(protein_sel):
+    dictionary_centroid_arrays = {}
+    full_protein_coord_array = protein_sel.coordinates()
+    list_individual_protein_coord_arrays = numpy.split(full_protein_coord_array,num_protein_copies)
+    list_per_protein_centroids = [numpy.average(protein_coord_array,axis=1) for protein_coord_array in list_individual_protein_coord_arrays]
+    dictionary_centroid_arrays['protein'] = numpy.array(list_per_protein_centroids)
+    return dictionary_centroid_arrays
+
+
 def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_path, window_size_frames_list, dict_particle_selection_strings, contiguous_protein_selection=None, num_proteins=None, num_protein_copies = None):
     '''Calculate the mean square displacement (MSD) of particles in a molecular dynamics simulation trajectory using the Python `MDAnalysis <http://code.google.com/p/mdanalysis/>`_ package [Michaud-Agrawal2011]_.
 
@@ -268,13 +277,6 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
     else: #dealing with proteins, where we don't want a breakdown by residue
         protein_selection = universe_object.selectAtoms(contiguous_protein_selection)
 
-        def centroid_array_production_protein(protein_sel):
-            dictionary_centroid_arrays = {}
-            full_protein_coord_array = protein_sel.coordinates()
-            list_individual_protein_coord_arrays = numpy.split(full_protein_coord_array,num_protein_copies)
-            list_per_protein_centroids = [numpy.average(protein_coord_array,axis=0) for protein_coord_array in list_individual_protein_coord_arrays]
-            dictionary_centroid_arrays['protein'] = numpy.array(list_per_protein_centroids)
-            return dictionary_centroid_arrays
 
     dict_MSD_values = {'MSD_value_dict':{},'MSD_std_dict':{},'frame_skip_value_list':[]} #for overall storage of MSD average / standard deviation values for this replicate
 
