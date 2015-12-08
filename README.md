@@ -5,6 +5,8 @@ Contains Python utility functions for the analysis of diffusion in molecular dyn
 
 The documentation for the project is available here: http://diffusion-analysis-md-simulations.readthedocs.org/en/latest/index.html
 
+An IPython notebook containing an example diffusion calculation is available: https://github.com/tylerjereddy/diffusion_analysis_MD_simulations/blob/master/diffusion_analysis_sim126_extended.ipynb 
+
 Please cite: [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.11827.png)](http://dx.doi.org/10.5281/zenodo.11827)
 
 For contributions:
