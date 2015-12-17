@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/tylerjereddy/diffusion_analysis_MD_simulations.svg?branch=master)](https://travis-ci.org/tylerjereddy/diffusion_analysis_MD_simulations)
+[![Coverage Status](https://coveralls.io/repos/tylerjereddy/diffusion_analysis_MD_simulations/badge.svg?branch=master&service=github)](https://coveralls.io/github/tylerjereddy/diffusion_analysis_MD_simulations?branch=master)
 
 Analysis of particle diffusion in molecular dynamics simulations
 ================================================================
