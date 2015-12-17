@@ -1,6 +1,6 @@
 # coding: utf-8
 '''
-Author: Tyler Reddy
+Authors: Tyler Reddy and Anna Duncan
 
 The purpose of this Python module is to provide utility functions for analyzing the diffusion of particles in molecular dynamics simulation trajectories using either linear or anomalous diffusion models.'''
 
