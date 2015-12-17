@@ -119,10 +119,10 @@ class Test_protein_diffusion_calculation(unittest.TestCase):
         universe_object = MDAnalysis.Universe(self.simple_gro_path, self.simple_xtc_path)
         protein_centroids = []
         for i in range(5):
-            prot_sele = universe_object.selectAtoms('bynum {}:{}'.format(i*18+1, (i+1)*18) )
+            prot_sele = universe_object.select_atoms('bynum {}:{}'.format(i*18+1, (i+1)*18) )
             protein_centroids.append(prot_sele.centroid())
         # now get the same data from the diffusion_analysis script
-        all_prot_sele = universe_object.selectAtoms('bynum 1:90')
+        all_prot_sele = universe_object.select_atoms('bynum 1:90')
         num_protein_copies = 5
         dictionary_centroid_arrays = diffusion_analysis.centroid_array_production_protein(all_prot_sele, num_protein_copies )
         # ..and compare

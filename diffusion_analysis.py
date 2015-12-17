@@ -261,9 +261,9 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
     if not contiguous_protein_selection:
         MDA_residue_selection_dictionary = {}
         for particle_name, selection_string in dict_particle_selection_strings.iteritems():
-            MDA_selection = universe_object.selectAtoms(selection_string)
+            MDA_selection = universe_object.select_atoms(selection_string)
             MDA_selection_residue_list = MDA_selection.residues #have to break it down by residues, otherwise would end up with centroid of all particles of a given name
-            list_per_residue_selection_objects = [residue.selectAtoms(selection_string) for residue in MDA_selection_residue_list] #the MDA selection objects PER residue
+            list_per_residue_selection_objects = [residue.select_atoms(selection_string) for residue in MDA_selection_residue_list] #the MDA selection objects PER residue
             MDA_residue_selection_dictionary[particle_name] = list_per_residue_selection_objects
 
         def centroid_array_production(current_MDA_selection_dictionary): #actually my modification of this for the github workflow won't work--it will find the centroid of ALL the particles with the same name
@@ -275,7 +275,7 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
             return dictionary_centroid_arrays
 
     else: #dealing with proteins, where we don't want a breakdown by residue
-        protein_selection = universe_object.selectAtoms(contiguous_protein_selection)
+        protein_selection = universe_object.select_atoms(contiguous_protein_selection)
 
 
     dict_MSD_values = {'MSD_value_dict':{},'MSD_std_dict':{},'frame_skip_value_list':[]} #for overall storage of MSD average / standard deviation values for this replicate
