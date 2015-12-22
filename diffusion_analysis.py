@@ -198,7 +198,7 @@ def centroid_array_production_protein(protein_sel,num_protein_copies):
     return dictionary_centroid_arrays
 
 
-def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_path, window_size_frames_list, dict_particle_selection_strings, contiguous_protein_selection=None, num_proteins=None, num_protein_copies = None):
+def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_path, window_size_frames_list, dict_particle_selection_strings, contiguous_protein_selection=None, num_protein_copies = None):
     '''Calculate the mean square displacement (MSD) of particles in a molecular dynamics simulation trajectory using the Python `MDAnalysis <http://code.google.com/p/mdanalysis/>`_ package [Michaud-Agrawal2011]_.
 
     Parameters
