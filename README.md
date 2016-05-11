@@ -14,6 +14,8 @@ An IPython notebook containing an example diffusion calculation is available: ht
 
 Please cite: [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.11827.png)](http://dx.doi.org/10.5281/zenodo.11827)
 
+And even better if you cite the original paper: Reddy *et al.* (2016) Structure 23: 584-97. [[DOI]](http://dx.doi.org/10.1016/j.str.2014.12.019)
+
 For contributions:
   * ensure all unit tests pass (run nosetests)
   * ensure all doctests pass (run doctesting.py)
