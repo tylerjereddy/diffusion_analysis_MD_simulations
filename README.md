@@ -14,9 +14,9 @@ The documentation for the project is available here: http://diffusion-analysis-m
 
 An IPython notebook containing an example diffusion calculation is available: https://github.com/tylerjereddy/diffusion_analysis_MD_simulations/blob/master/diffusion_analysis_sim126_extended.ipynb 
 
-Please cite: [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.11827.png)](http://dx.doi.org/10.5281/zenodo.11827)
+Please cite: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11827.svg)](https://doi.org/10.5281/zenodo.11827)
 
-And even better if you cite the original paper: Reddy *et al.* (2016) *Structure* **23**: 584-97. [[DOI]](http://dx.doi.org/10.1016/j.str.2014.12.019)
+And even better if you cite the original paper: Reddy *et al.* (2015) *Structure* **23**: 584-97. [[DOI]](http://dx.doi.org/10.1016/j.str.2014.12.019)
 
 For contributions:
   * ensure all unit tests pass (run nosetests)
