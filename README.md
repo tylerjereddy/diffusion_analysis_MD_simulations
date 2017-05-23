@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/tylerjereddy/diffusion_analysis_MD_simulations.svg?branch=master)](https://travis-ci.org/tylerjereddy/diffusion_analysis_MD_simulations)
-[![Coverage Status](https://coveralls.io/repos/tylerjereddy/diffusion_analysis_MD_simulations/badge.svg?branch=master&service=github)](https://coveralls.io/github/tylerjereddy/diffusion_analysis_MD_simulations?branch=master)
+[![Build Status](https://travis-ci.org/ldomic/diffusion_analysis_MD_simulations.svg?branch=master)](https://travis-ci.org/ldomic/diffusion_analysis_MD_simulations)
+[![Coverage Status](https://coveralls.io/repos/ldomic/diffusion_analysis_MD_simulations/badge.svg?branch=master&service=github)](https://coveralls.io/github/ldomic/diffusion_analysis_MD_simulations?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/diffusion-analysis-md-simulations/badge/?version=latest)](http://diffusion-analysis-md-simulations.readthedocs.org/en/latest/?badge=latest)
 
-[![Build history](https://buildstats.info/travisci/chart/tylerjereddy/diffusion_analysis_MD_simulations)](https://travis-ci.org/tylerjereddy/diffusion_analysis_MD_simulations/builds)
+[![Build history](https://buildstats.info/travisci/chart/ldomic/diffusion_analysis_MD_simulations)](https://travis-ci.org/ldomic/diffusion_analysis_MD_simulations/builds)
                 
 
 Analysis of particle diffusion in molecular dynamics simulations
