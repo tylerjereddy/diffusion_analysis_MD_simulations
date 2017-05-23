@@ -10,7 +10,7 @@ before_install:
 install:
   - conda create --yes -q -n pyenv libgfortran python=2.7 numpy=1.11 scipy=0.18.0 nose=1.3.7
   - source activate pyenv
-  - pip install MDAnalysis==0.12.1
+  - pip install MDAnalysis==0.16.0
   - pip install coveralls tempdir
   - chmod +x ./
 script:
