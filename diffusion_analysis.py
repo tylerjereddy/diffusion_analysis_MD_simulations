@@ -10,7 +10,7 @@ import scipy.optimize
 
 def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=2):
     '''This function should fit anomalous diffusion data to Equation 1 in [Kneller2011]_, and return appropriate diffusion parameters.
-    
+
     .. math::
 
         MSD = ND_{\\alpha}t^{\\alpha}
@@ -64,7 +64,7 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
     >>> artificial_MSD_values = numpy.array([0.,1.,2.,2.2,3.6,4.7,5.8,6.6,7.0,6.9])
     >>> results_tuple = diffusion_analysis.fit_anomalous_diffusion_data(artificial_time_values,artificial_MSD_values)
     >>> D, D_std, alpha, alpha_std = results_tuple[0:4]
-    >>> print D, D_std, alpha, alpha_std 
+    >>> print D, D_std, alpha, alpha_std
     0.268426206526 0.0429995249239 0.891231967011 0.0832911559401
 
     Plot the non-linear fit data:
@@ -105,7 +105,7 @@ def fit_anomalous_diffusion_data(time_data_array,MSD_data_array,degrees_of_freed
 
 def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=2):
     '''The linear (i.e., normal, random-walk) MSD vs. time diffusion constant calculation.
-    
+
     The results are returned in a tuple.
 
     Parameters
@@ -124,9 +124,9 @@ def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=
     diffusion_constant_error_estimate
         The estimated uncertainty in the diffusion constant (units of Angstrom ** 2 / ns), calculated as the difference in the slopes of the two halves of the data. A similar approach is used by GROMACS g_msd [Hess2008]_.
     sample_fitting_data_X_values_nanoseconds
-        An array of time window sizes (x values) that may be used to plot the linear fit 
+        An array of time window sizes (x values) that may be used to plot the linear fit
     sample_fitting_data_Y_values_Angstroms
-        An array of MSD values (y values) that may be used to plot the linear fit 
+        An array of MSD values (y values) that may be used to plot the linear fit
 
     Raises
     ------
@@ -167,19 +167,19 @@ def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=
 
     coefficient_dictionary = {1:2.,2:4.,3:6.} #dictionary for mapping degrees_of_freedom to coefficient in fitting equation
     coefficient = coefficient_dictionary[degrees_of_freedom]
-    
+
     x_data_array = time_data_array
     y_data_array = MSD_data_array
     z = numpy.polyfit(x_data_array,y_data_array,1)
     slope, intercept = z
-    diffusion_constant = slope / coefficient 
+    diffusion_constant = slope / coefficient
 
     #estimate error in D constant using g_msd approach:
     first_half_x_data, second_half_x_data = numpy.array_split(x_data_array,2)
     first_half_y_data, second_half_y_data = numpy.array_split(y_data_array,2)
     slope_first_half, intercept_first_half = numpy.polyfit(first_half_x_data,first_half_y_data,1)
     slope_second_half, intercept_second_half = numpy.polyfit(second_half_x_data,second_half_y_data,1)
-    diffusion_constant_error_estimate = abs(slope_first_half - slope_second_half) / coefficient 
+    diffusion_constant_error_estimate = abs(slope_first_half - slope_second_half) / coefficient
 
     #use poly1d object for polynomial calling convenience (to provide plotting fit data for user if they want to use it):
     p = numpy.poly1d(z)
@@ -191,7 +191,7 @@ def fit_linear_diffusion_data(time_data_array,MSD_data_array,degrees_of_freedom=
 
 def centroid_array_production_protein(protein_sel,num_protein_copies):
     dictionary_centroid_arrays = {}
-    full_protein_coord_array = protein_sel.coordinates()
+    full_protein_coord_array = protein_sel.positions
     list_individual_protein_coord_arrays = numpy.split(full_protein_coord_array,num_protein_copies)
     list_per_protein_centroids = [numpy.average(protein_coord_array,axis=0) for protein_coord_array in list_individual_protein_coord_arrays]
     dictionary_centroid_arrays['protein'] = numpy.array(list_per_protein_centroids)
@@ -220,7 +220,7 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
     -------
     dict_MSD_values: dict
         Dictionary of mean square displacement data. Contains three keys: MSD_value_dict (MSD values, in Angstrom ** 2), MSD_std_dict (standard deviation of MSD values), frame_skip_value_list (the frame window sizes)
-        
+
     References
     ----------
 
@@ -229,11 +229,11 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
     Examples
     --------
     Extract MSD values from an artificial GROMACS xtc file (results measured in A**2 based on frame window sizes) containing only three amino acid residues.
-    
+
     >>> import diffusion_analysis
     >>> import numpy
     >>> import matplotlib
-    >>> import matplotlib.pyplot as plt 
+    >>> import matplotlib.pyplot as plt
 
     >>> window_size_list_frames = [1,2,4,6]
     >>> dict_particle_selection_strings = {'MET':'resname MET','ARG':'resname ARG','CYS':'resname CYS'}
@@ -263,7 +263,7 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
         for particle_name, selection_string in dict_particle_selection_strings.iteritems():
             MDA_selection = universe_object.select_atoms(selection_string)
             MDA_selection_residue_list = MDA_selection.residues #have to break it down by residues, otherwise would end up with centroid of all particles of a given name
-            list_per_residue_selection_objects = [residue.select_atoms(selection_string) for residue in MDA_selection_residue_list] #the MDA selection objects PER residue
+            list_per_residue_selection_objects = [residue.atoms.select_atoms(selection_string) for residue in MDA_selection_residue_list] #the MDA selection objects PER residue
             MDA_residue_selection_dictionary[particle_name] = list_per_residue_selection_objects
 
         def centroid_array_production(current_MDA_selection_dictionary): #actually my modification of this for the github workflow won't work--it will find the centroid of ALL the particles with the same name
@@ -306,7 +306,7 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
 
                 #reset the value of the 'previous' array as you go along:
                 previous_frame_centroid_array_dictionary = current_frame_centroid_array_dictionary
-                #print 'frame:', ts.frame 
+                #print 'frame:', ts.frame
             counter += 1
         for particle_name, MSD_data_subdictionary in trajectory_striding_dictionary.iteritems():
             if not particle_name in dict_MSD_values['MSD_value_dict'].keys(): #initialize subdictionaries as needed
