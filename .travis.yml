@@ -12,6 +12,11 @@ install:
   - source activate pyenv
   - pip install MDAnalysis==0.16.0
   - pip install coveralls tempdir
+  - wget http://pyyaml.org/download/pyyaml/PyYAML-3.12.tar.gz
+  - tar -zxvf PyYAML-3.12.tar.gz
+  - cd PyYAML-3.12
+  - python setup.py install
+  - cd ../
   - chmod +x ./
 script:
   - nosetests --with-coverage --cover-package diffusion_analysis test_diffusion_analysis.py
