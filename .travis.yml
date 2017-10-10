@@ -8,15 +8,11 @@ before_install:
   - export PATH=/home/travis/miniconda/bin:$PATH
   - conda update --yes conda
 install:
-  - conda create --yes -q -n pyenv libgfortran python=2.7 numpy=1.13 scipy=0.19.1 pytest=3.2.1 pytest-cov=2.5.1
+  - conda create --yes -q -n pyenv libgfortran python=2.7 numpy=1.13 scipy=0.19.1 pytest=3.2.1 pytest-cov=2.5.1 pyyaml=3.12
   - source activate pyenv
-  - pip install MDAnalysis==0.16.0
+  - conda config --add channels conda-forge
+  - conda install MDAnalysis=0.16.2
   - pip install coveralls tempdir
-  - wget http://pyyaml.org/download/pyyaml/PyYAML-3.12.tar.gz
-  - tar -zxvf PyYAML-3.12.tar.gz
-  - cd PyYAML-3.12
-  - python setup.py install
-  - cd ../
   - chmod +x ./
 script:
   - pytest --cov=diffusion_analysis --cov-report term-missing test_diffusion_analysis.py
