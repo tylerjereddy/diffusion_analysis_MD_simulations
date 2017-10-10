@@ -260,7 +260,7 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
 
     if not contiguous_protein_selection:
         MDA_residue_selection_dictionary = {}
-        for particle_name, selection_string in dict_particle_selection_strings.iteritems():
+        for particle_name, selection_string in dict_particle_selection_strings.items():
             MDA_selection = universe_object.select_atoms(selection_string)
             MDA_selection_residue_list = MDA_selection.residues #have to break it down by residues, otherwise would end up with centroid of all particles of a given name
             list_per_residue_selection_objects = [residue.atoms.select_atoms(selection_string) for residue in MDA_selection_residue_list] #the MDA selection objects PER residue
@@ -269,7 +269,7 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
         def centroid_array_production(current_MDA_selection_dictionary): #actually my modification of this for the github workflow won't work--it will find the centroid of ALL the particles with the same name
             '''Produce numpy arrays of centroids organized in a dictionary by particle identifier and based on assignment of particle selections to unique residue objects within MDAnalysis.'''
             dictionary_centroid_arrays = {}
-            for particle_name,list_per_residue_selection_objects in current_MDA_selection_dictionary.iteritems():
+            for particle_name,list_per_residue_selection_objects in current_MDA_selection_dictionary.items():
                 list_per_residue_selection_centroids = [residue_selection.centroid() for residue_selection in list_per_residue_selection_objects]
                 dictionary_centroid_arrays[particle_name] = numpy.array(list_per_residue_selection_centroids)
             return dictionary_centroid_arrays
@@ -308,7 +308,7 @@ def mean_square_displacement_by_species(coordinate_file_path, trajectory_file_pa
                 previous_frame_centroid_array_dictionary = current_frame_centroid_array_dictionary
                 #print 'frame:', ts.frame
             counter += 1
-        for particle_name, MSD_data_subdictionary in trajectory_striding_dictionary.iteritems():
+        for particle_name, MSD_data_subdictionary in trajectory_striding_dictionary.items():
             if not particle_name in dict_MSD_values['MSD_value_dict'].keys(): #initialize subdictionaries as needed
                 dict_MSD_values['MSD_value_dict'][particle_name] = []
                 dict_MSD_values['MSD_std_dict'][particle_name] = []
