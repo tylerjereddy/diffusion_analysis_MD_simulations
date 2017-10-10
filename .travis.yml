@@ -8,7 +8,7 @@ before_install:
   - export PATH=/home/travis/miniconda/bin:$PATH
   - conda update --yes conda
 install:
-  - conda create --yes -q -n pyenv libgfortran python=2.7 numpy=1.11 scipy=0.18.0 pytest=3.2.1 pytest-cov=2.5.1
+  - conda create --yes -q -n pyenv libgfortran python=2.7 numpy=1.13 scipy=0.19.1 pytest=3.2.1 pytest-cov=2.5.1
   - source activate pyenv
   - pip install MDAnalysis==0.16.0
   - pip install coveralls tempdir
