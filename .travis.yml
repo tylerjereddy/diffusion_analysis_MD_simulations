@@ -7,6 +7,7 @@ python:
   - "2.7"
   - "3.6"
   - "3.7"
+  - "3.8"
 before_install:
   - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
   - chmod +x miniconda.sh
@@ -15,7 +16,7 @@ before_install:
   - conda config --set always_yes yes
   - conda update conda
 install:
-  - conda create -q -n pyenv libgfortran python=$TRAVIS_PYTHON_VERSION numpy=1.15 scipy=1.1.0 pytest pytest-cov pyyaml
+  - conda create -q -n pyenv libgfortran python=$TRAVIS_PYTHON_VERSION numpy scipy pytest pytest-cov pyyaml
   - source activate pyenv
   - conda config --add channels conda-forge
   - conda install -c conda-forge mdanalysis
